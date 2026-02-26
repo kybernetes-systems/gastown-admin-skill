@@ -1,1 +1,41 @@
 # .gitignore
+
+# Editor/tool ignores
+# vim
+*.swp
+*.swo
+*~
+.dir-locals.el
+.tramp历史
+
+# beads (bd)
+.bd/
+.bd.toml
+.bd.lock
+
+# emacs
+#*#
+*~
+projectile.cache*
+elpa/
+.spacemacs
+.emacs.d/
+
+# aider
+.aider*
+aider.history*
+
+# codename goose
+.goose/
+goose/
+
+# opencode
+.opencode*
+
+# qwen code
+.qwen-code/
+qwen-code/
+
+# gemini cli
+.gemini/
+gemini-cli/
