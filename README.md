@@ -38,6 +38,8 @@ reads only what each task requires.
 
 ---
 
+The `.skill` package is a build artifact and is not tracked in version control.
+
 ## Prerequisites
 
 - `gt` (Gas Town CLI) in `PATH`
@@ -51,6 +53,12 @@ reads only what each task requires.
 
 **Claude.ai** — upload `gas-town-admin.skill` via Settings → Features.
 
+Build the package first:
+
+```sh
+make package
+```
+
 **Claude Code** — copy or symlink the skill directory:
 
 ```sh
@@ -63,10 +71,16 @@ cp -r gas-town-admin .claude/skills/
 your runtime's skill loader scans. Consult your runtime's documentation
 for the skills path.
 
-**Validation** (requires [skills-ref](https://github.com/agentskills/agentskills)):
+**Validation** — requires the `agentskills` CLI. It ships under a
+different name on PyPI: install the [`skills-ref`](https://pypi.org/project/skills-ref/)
+package and the `agentskills` binary arrives in your PATH.
+
+ ```sh
+uv tool install skills-ref   # installs as: agentskills
+
 
 ```sh
-skills-ref validate ./gas-town-admin
+make validate
 ```
 
 ---
