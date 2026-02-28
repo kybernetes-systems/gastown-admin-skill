@@ -1,5 +1,5 @@
 ---
-name: gas-town-admin
+name: gastown-admin
 description: >
   Administers Gas Town (gt) multi-agent orchestration environments as an
   operator or infrastructure agent: initializes and configures workspaces and
@@ -17,7 +17,7 @@ compatibility: >
   harness/claude-code.md (Claude Code) or harness/generic-shell.md (all other
   runtimes).
 metadata:
-  author: gas-town-admin skill
+  author: gastown-admin skill
   version: "1.0"
   target-actor: admin-agent
   upstream-docs: https://docs.gastownhall.ai

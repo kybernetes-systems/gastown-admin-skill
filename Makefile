@@ -1,7 +1,7 @@
 .PHONY: all package validate clean
 
-SKILL_DIR := gas-town-admin
-SKILL_PKG := gas-town-admin.skill
+SKILL_DIR := gastown-admin
+SKILL_PKG := gastown-admin.skill
 
 all: package
 

@@ -1,4 +1,4 @@
-# gas-town-admin
+# gastown-admin
 
 An [Agent Skills](https://agentskills.io) skill for administering
 [Gas Town](https://gastownhall.ai) (`gt`) multi-agent orchestration
@@ -18,7 +18,7 @@ Gas Town installation.
 ## Contents
 
 ```
-gas-town-admin/
+gastown-admin/
 ├── SKILL.md                      Core instructions, architecture overview,
 │                                 quick-reference decision table
 ├── references/
@@ -51,7 +51,7 @@ The `.skill` package is a build artifact and is not tracked in version control.
 
 ## Installation
 
-**Claude.ai** — upload `gas-town-admin.skill` via Settings → Features.
+**Claude.ai** — upload `gastown-admin.skill` via Settings → Features.
 
 Build the package first:
 
@@ -62,9 +62,9 @@ make package
 **Claude Code** — copy or symlink the skill directory:
 
 ```sh
-cp -r gas-town-admin ~/.claude/skills/
+cp -r gastown-admin ~/.claude/skills/
 # or for project-scoped installation:
-cp -r gas-town-admin .claude/skills/
+cp -r gastown-admin .claude/skills/
 ```
 
 **Other Agent Skills-compatible runtimes** — place the directory wherever
@@ -75,11 +75,8 @@ for the skills path.
 different name on PyPI: install the [`skills-ref`](https://pypi.org/project/skills-ref/)
 package and the `agentskills` binary arrives in your PATH.
 
- ```sh
-uv tool install skills-ref   # installs as: agentskills
-
-
 ```sh
+uv tool install skills-ref   # installs as: agentskills
 make validate
 ```
 
