@@ -12,7 +12,7 @@ description: >
 license: Apache-2.0
 compatibility: Designed for Claude Code and other agentskills.io-compatible harnesses
 metadata:
-  author: kybernetes-systems
+  author: Kybernetes Systems
   version: "0.1.0"
   lore-epoch: The Wasteland
   codename: Gas Town
