@@ -1,108 +1,136 @@
-# gastown-admin
+# Gas Town Skill Refinery
 
-An [Agent Skills](https://agentskills.io) skill for administering
-[Gas Town](https://gastownhall.ai) (`gt`) multi-agent orchestration
-environments.
+The Wasteland has no shortage of agents. It has a shortage of agents
+that know what they're doing.
 
-Targets an AI agent (an LLM harness) acting as a Gas Town **operator or
-infrastructure orchestrator** — not a worker or other entity participating in
-the system. It is what an LLM working on behalf of the creator of Gas Town
-and/or of any of a number of other gas towns needs in order to do the job well.
+A Gas Town Skill Refinery turns raw intent into distribution-ready
+agent skill packages — validated, documented, multi-harness compatible.
+There are many refineries. This is one. Fork it, deploy it, run it into
+the ground; the spec doesn't care who owns the rig.
 
-In other words, use this when authoring software that drives `gt` commands
-programmatically, or when an agent needs to set up, operate, or troubleshoot a
-Gas Town installation.
+Built for the [agentskills.io](https://agentskills.io) open standard.
 
 ---
 
-## Contents
+## What Comes Out the Other End
 
-```
-gastown-admin/
-├── SKILL.md                      Core instructions, architecture overview,
-│                                 quick-reference decision table
-├── references/
-│   ├── setup-and-config.md       Install, init, rig management, configuration
-│   ├── service-lifecycle.md      Daemon, deacon, mayor, witness, refinery
-│   ├── agent-management.md       Polecats, crew, dogs, sessions, identity
-│   ├── work-routing.md           Convoys, sling, merge queue, formulas
-│   ├── monitoring-diagnostics.md Doctor, status, audit, feeds, dashboard
-│   └── communication.md         Nudge, mail, broadcast, escalation
-└── harness/
-    ├── claude-code.md            Claude Code–specific tool invocation patterns
-    └── generic-shell.md          Subprocess patterns for all other runtimes
-```
+A skill directory. Specifically:
 
-Reference files are loaded on demand (progressive disclosure). An agent
-reads only what each task requires.
+- `SKILL.md` with valid frontmatter and stage instructions
+- `references/` with supporting documentation
+- `scripts/` for validation and tooling
+- `.source.json` provenance metadata
+
+Validated. Ready to install. No promises about what you put in.
 
 ---
-
-The `.skill` package is a build artifact and is not tracked in version control.
 
 ## Prerequisites
 
-- `gt` (Gas Town CLI) in `PATH`
-- `bd` (Beads CLI) in `PATH`
-- `git`, `tmux`
-- Claude Code accessible to the worker agents being managed
+- Python 3.11+
+- [uv](https://docs.astral.sh/uv/)
+- git
 
 ---
 
 ## Installation
 
-**Claude.ai** — upload `gastown-admin.skill` via Settings → Features.
+Pick your harness. The skill does not care how it arrives.
 
-Build the package first:
-
-```sh
-make package
-```
-
-**Claude Code** — copy or symlink the skill directory:
+### Claude Code
 
 ```sh
-cp -r gastown-admin ~/.claude/skills/
-# or for project-scoped installation:
-cp -r gastown-admin .claude/skills/
+# Project-scoped (recommended)
+cp -r gastown-admin-skill .claude/skills/
+
+# User-global
+cp -r gastown-admin-skill ~/.claude/skills/
 ```
 
-**Other Agent Skills-compatible runtimes** — place the directory wherever
-your runtime's skill loader scans. Consult your runtime's documentation
-for the skills path.
-
-**Validation** — requires the `agentskills` CLI. It ships under a
-different name on PyPI: install the [`skills-ref`](https://pypi.org/project/skills-ref/)
-package and the `agentskills` binary arrives in your PATH.
+### GitHub Copilot
 
 ```sh
-uv tool install skills-ref   # installs as: agentskills
-make validate
+cp -r gastown-admin-skill .github/skills/
 ```
+
+### OpenCode
+
+OpenCode needs the `AGENTS.md` shim included in this package.
+
+```sh
+cp -r gastown-admin-skill .opencode/skills/
+```
+
+### Goose
+
+```sh
+cp -r gastown-admin-skill .goose/skills/
+```
+
+### Global / Other
+
+```sh
+cp -r gastown-admin-skill ~/.config/agents/skills/
+```
+
+See `references/harness-compat.md` for the full compatibility map.
 
 ---
 
-## Design notes
+## Quick Start
 
-**Scope:** admin/operator only. Worker-side lifecycle (hook, done, handoff,
-resume) is intentionally excluded — that belongs in a separate skill.
+Scaffold a skill, then find out what's wrong with it.
 
-**Harness portability:** `SKILL.md` and all reference files use
-harness-neutral language ("read", "run", "execute"). Platform-specific
-optimizations (Claude Code `Bash` tool patterns, `--json` piping via `jq`)
-are isolated in `harness/`. An agent on any runtime reads the neutral
-baseline; Claude Code agents additionally read `harness/claude-code.md`
-for optimized invocation.
+```sh
+uv run scripts/scaffold.py --name my-skill --description "Does X. Use when Y."
+uv run scripts/validate_skill.py ./my-skill --strict
+```
 
-**Spec compliance:** frontmatter conforms to the
-[Agent Skills open standard](https://agentskills.io/specification) —
-name matches directory, description under 1024 chars, no reserved words,
-no `allowed-tools` (experimental/platform-specific).
+Absent identification of problems, any solutions are left to chance.
+
+Exit codes: 0 = clean, 1 = errors, 2 = warnings. Errors are errors.
 
 ---
 
-## Upstream documentation
+## The Pipeline
 
-Full Gas Town documentation: <https://docs.gastownhall.ai>  
-Gas Town source: <https://github.com/steveyegge/gastown>  
-Agent Skills specification: <https://agentskills.io/specification>
+Six stages. Each has a gate. Don't skip gates.
+
+| Stage | Name | In | Out |
+|---|---|---|---|
+| 1 | Prospect | Human intent | Requirements manifest |
+| 2 | Assay | Requirements | File tree plan |
+| 3 | Refine | Plan | Skill directory (raw) |
+| 4 | Harden | Raw skill | Validated skill |
+| 5 | Ship | Validated skill | Distribution package |
+| 6 | Maintain | Deployed skill | Updated versions |
+
+Full stage instructions: `SKILL.md`.
+
+---
+
+## Scripts
+
+Five scripts. All stdlib-only, all support `--help` and `--json`.
+
+| Script | Does |
+|---|---|
+| `scaffold.py` | Bootstrap a new skill directory |
+| `validate_skill.py` | Check compliance with agentskills.io spec |
+| `token_estimate.py` | Count tokens per disclosure tier |
+| `audit_disclosure.py` | Find orphans, oversized blocks, quality issues |
+| `gen_source_json.py` | Generate provenance metadata |
+
+---
+
+## Blueprint
+
+Architecture decisions and design rationale: [BLUEPRINT.md](./BLUEPRINT.md)
+
+Harness compatibility: [references/harness-compat.md](./references/harness-compat.md)
+
+---
+
+## License
+
+Apache-2.0. See [LICENSE.txt](./LICENSE.txt).
