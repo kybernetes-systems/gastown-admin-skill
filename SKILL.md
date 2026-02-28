@@ -69,3 +69,72 @@ optional:
 
 For complex skills (multiple reference files, scripts, multi-harness support),
 run all six stages in order.
+
+---
+
+## Stage 1: Prospect
+
+Gather crude material. Do not write any skill files yet.
+
+1. **State the target capability** in one sentence: what will this skill enable
+   an agent to do?
+
+2. **Define semantic triggers.** List ≥ 5 phrases a user might say to invoke
+   this skill. Consult `references/description-craft.md` for trigger patterns.
+
+3. **Identify environmental dependencies.** List every tool, CLI, service, or
+   runtime the skill requires. Mark each as required or optional.
+
+4. **Determine target harnesses.**
+   - Claude Code only → no shims needed; proceed.
+   - Additional harnesses (Copilot, OpenCode, Goose, Aider, Amp) → flag each;
+     plan compatibility shims in Assay. Consult `references/harness-compat.md`.
+
+5. **Assess script need.**
+   - Skill requires file generation, validation, or structured output → plan
+     one or more scripts under `scripts/` using PEP 723 inline metadata.
+   - Skill provides procedural instructions only → skip `scripts/`.
+
+6. **Output:** a requirements manifest (in-context or written to a temp file)
+   covering all five items above.
+
+**Gate:** manifest answers capability, triggers, dependencies, harnesses, and
+script need before advancing.
+
+---
+
+## Stage 2: Assay
+
+Design the directory structure. Still no skill content writing.
+
+1. **Design the directory tree.** Decide which optional components to include:
+   - `references/` → include if content would exceed SKILL.md's 500-line budget
+     or is material the agent loads on demand rather than every task.
+   - `scripts/` → include if Prospect flagged script need.
+   - `assets/` → include only if non-text assets (templates, examples) are
+     needed.
+
+2. **Plan progressive disclosure allocation.**
+   - T1 (frontmatter): `name` + `description` only.
+   - T2 (SKILL.md body): pipeline, routing tables, common workflows. Keep ≤ 500
+     lines total.
+   - T3 (`references/`): deep reference material, spec excerpts, edge cases.
+   - Rule: consulted on every task → T2. Consulted occasionally → T3.
+
+3. **Estimate token budgets.** Run:
+   ```
+   uv run scripts/token_estimate.py <skill-dir>
+   ```
+   T2 target: ≤ 5 000 tokens. If over budget, move reference material to T3.
+
+4. **Plan harness compatibility shims.** Consult `references/harness-compat.md`:
+   - Claude Code → no shim required.
+   - OpenCode → plan `AGENTS.md` shim.
+   - GitHub Copilot → no shim; verify discovery path.
+   - Other harnesses → plan per `references/harness-compat.md`.
+
+5. **Output:** a file tree listing every file to be created and which tier
+   (T1/T2/T3) it serves.
+
+**Gate:** file tree is complete and satisfies all Prospect requirements before
+advancing to Refine.
