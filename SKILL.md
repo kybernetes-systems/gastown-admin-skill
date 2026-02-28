@@ -208,7 +208,97 @@ Each reference file must:
 - Open with a one-sentence description of its scope.
 - Include a table of contents if over 100 lines.
 - Be referenced from SKILL.md with a "Read when" condition, e.g.:
-  > Consult `references/auth-patterns.md` when implementing OAuth flows.
+  > Consult `references/script-design.md` when writing scripts for a skill.
 
 **Gate:** all planned files are written and the directory matches the Assay file
 tree before advancing to Harden.
+
+---
+
+## Stage 4: Harden
+
+Validate and secure the skill. Do not distribute until this stage is clean.
+
+Run all checks in order. Fix errors before advancing to the next check.
+
+1. Validate spec compliance:
+   ```
+   uv run scripts/validate_skill.py <path> --strict --json
+   ```
+
+2. Audit progressive disclosure:
+   ```
+   uv run scripts/audit_disclosure.py <path> --json
+   ```
+
+3. Check token budgets:
+   ```
+   uv run scripts/token_estimate.py <path> --json
+   ```
+   T2 must be ≤ 5 000 tokens. Move sections to `references/` if over budget.
+
+4. Run the spec reference validator (if available):
+   ```
+   skills-ref validate <path>
+   ```
+
+5. Review the security checklist:
+   ```
+   cat references/security-checklist.md
+   ```
+   Address every item marked REQUIRED before shipping.
+
+6. Fix all errors. Re-run affected checks. Repeat until all checks pass.
+
+**Gate:** `validate_skill.py` and `audit_disclosure.py` both exit 0 before
+advancing to Ship.
+
+---
+
+## Stage 5: Ship
+
+Prepare the skill for distribution.
+
+1. **Generate provenance:**
+   ```
+   uv run scripts/gen_source_json.py <path> --author "<name>" --version "<ver>"
+   ```
+
+2. **Install locally** (Claude Code): copy the skill directory to
+   `~/.claude/skills/<skill-name>/` (user-global) or
+   `.claude/skills/<skill-name>/` in the target project (project-local).
+
+3. **Distribute via Git:** push the skill directory to a repository. Consumers
+   clone and install per step 2. Include a `README.md` with install
+   instructions and environment requirements.
+
+4. **Publish to registry:** submit to the agentskills.io registry.
+   `.source.json` provenance is required for submission.
+
+5. **Package as `.skill` archive** (optional): zip the skill directory as
+   `<skill-name>.skill` for offline or air-gapped distribution.
+
+**Gate:** `.source.json` is present in the skill directory.
+
+---
+
+## Stage 6: Maintain
+
+Ongoing operations after the skill is deployed.
+
+**Version bumps:** increment `metadata.version` in frontmatter. Re-run Harden.
+Update changelog. Notify consumers if a breaking change affects trigger phrases
+or tool requirements.
+
+**Description re-optimization:** if the skill is not triggering reliably,
+revise `description` trigger phrases using `references/description-craft.md`.
+Re-run `validate_skill.py` to verify character limits. Test against the target
+harness.
+
+**Regression testing after harness updates:** re-run `audit_disclosure.py` and
+`validate_skill.py`. Check `references/harness-compat.md` for newly verified
+or invalidated compatibility claims. Update shims as needed.
+
+**Deprecation:** set `metadata.deprecated: "true"` and add
+`metadata.successor: "<replacement-skill-name>"` in frontmatter. Leave the
+skill in place for one release cycle before removing.
