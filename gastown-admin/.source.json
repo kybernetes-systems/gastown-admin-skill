@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "skill_name": "gastown-admin",
+  "author": "",
+  "version": "",
+  "created_at": "2026-02-28T17:33:36.387162+00:00",
+  "files": {
+    "SKILL.md": "5a1242d61996dc186e473af960cbff3be76ec91b788375f4ee2222f519832faf",
+    "harness/claude-code.md": "68901294e87ca3ed6021dc0a6b248755914494918fabe4c52ed0267b52deb7ba",
+    "harness/generic-shell.md": "a30c1feccb93dab23f123a11d908787a6f1eb839ff2c505bafe8c02a704c04c3",
+    "references/agent-management.md": "9863859b5029613de8131aeeddc1cb8838c9007eee1a0fd0ac6f264ae563c110",
+    "references/communication.md": "45ce3d554101a16e73b050a957fa4e1523c843206faf1740e9a58b1fbc52f66a",
+    "references/monitoring-diagnostics.md": "3787d9d5d02734e23c0ce083d1bacd32b219c78b9f42a686c032342592a6d104",
+    "references/service-lifecycle.md": "e4353979e1ec1a497192c71cf75a6e31b0e6276778a2844f26cddcec15a81c4e",
+    "references/setup-and-config.md": "99693c824dfbbd36ccd6568850c01bc21edbaa972ac7d7fcc7358198591c0523",
+    "references/work-routing.md": "92049491e091a8ac17ae664b742e61887ae4c0dcfb690ff2aa1f2cd243495135"
+  }
+}
