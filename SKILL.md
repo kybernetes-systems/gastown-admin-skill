@@ -57,6 +57,26 @@ the gate passes.
 | 5 | **Ship** | Validated skill | Distribution-ready skill + install docs | `.source.json` generated |
 | 6 | **Maintain** | Deployed skill | Updated versions + changelog | Ongoing |
 
+## Scripts
+
+| Script | Description | Invocation |
+|--------|-------------|------------|
+| `scaffold.py` | Bootstrap new skill directories with SKILL.md, references/, scripts/ | `uv run scripts/scaffold.py --name <name> --description "<desc>" [--scripts] [--references] [--assets] --output <dir>` |
+| `validate_skill.py` | Validate skill against agentskills.io spec | `uv run scripts/validate_skill.py <path> [--strict] [--json]` |
+| `token_estimate.py` | Estimate token counts per progressive disclosure tier | `uv run scripts/token_estimate.py <path> [--model MODEL] [--json]` |
+| `audit_disclosure.py` | Audit quality: large blocks, orphans, token budgets | `uv run scripts/audit_disclosure.py <path> [--json]` |
+| `gen_source_json.py` | Generate .source.json provenance metadata | `uv run scripts/gen_source_json.py <path> [--author NAME] [--version VER] [--json]` |
+
+## References
+
+| Reference | Description | Read when |
+|-----------|-------------|-----------|
+| [spec-summary.md](references/spec-summary.md) | agentskills.io specification summary | Validating SKILL.md frontmatter or understanding spec requirements |
+| [harness-compat.md](references/harness-compat.md) | Cross-harness compatibility guide | Adding support for OpenCode, GitHub Copilot, Goose, Aider, or Amp |
+| [description-craft.md](references/description-craft.md) | Guide for writing skill descriptions and trigger phrases | Drafting or revising skill description field |
+| [script-design.md](references/script-design.md) | Best practices for writing PEP 723 scripts | Writing any script in scripts/ directory |
+| [security-checklist.md](references/security-checklist.md) | Security considerations for skill authoring/distribution | Preparing skill for distribution; auditing for risks |
+
 ## Quick Start
 
 For simple, single-file skills (no reference files, no scripts), Assay is
