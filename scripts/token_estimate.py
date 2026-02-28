@@ -81,7 +81,7 @@ def analyze_skill_dir(path: Path, model: str, use_tiktoken: bool) -> dict:
     frontmatter, body = parse_frontmatter(content)
 
     if use_tiktoken and TIKTOKEN_AVAILABLE:
-        count = count_tokens_tiktoken
+        count = lambda text: count_tokens_tiktoken(text, model)
         result["method"] = f"tiktoken ({model})"
     else:
         count = count_tokens_word_heuristic
