@@ -138,3 +138,77 @@ Design the directory structure. Still no skill content writing.
 
 **Gate:** file tree is complete and satisfies all Prospect requirements before
 advancing to Refine.
+
+---
+
+## Stage 3: Refine
+
+Write all skill content. Work through the file tree produced in Assay in order.
+
+### Step 1: Scaffold (new skills only)
+
+If creating a new skill from scratch, run scaffold before writing any files:
+
+```
+uv run scripts/scaffold.py --name <name> --description "<placeholder>" \
+  [--scripts] [--references] [--assets] --output <parent-dir>
+```
+
+Pass `--scripts`, `--references`, `--assets` only for directories Assay
+included. Edit the generated files; do not start from a blank directory.
+
+### Step 2: Write target SKILL.md frontmatter
+
+Consult `references/spec-summary.md` for all field constraints.
+
+- `name` — kebab-case, 1-64 chars; must match the skill directory name exactly.
+- `description` — 1-1024 chars. Draft it last, after the body is complete.
+  Consult `references/description-craft.md` for trigger phrase patterns.
+- `license`, `compatibility`, `metadata`, `allowed-tools` — fill as needed.
+
+Verify frontmatter before continuing:
+```
+uv run scripts/validate_skill.py <path> --json
+```
+
+### Step 3: Write target SKILL.md body
+
+- Keep the full file (frontmatter + body) under 500 lines.
+- Progressive disclosure: detailed reference material → `references/`; only
+  routing logic and common workflows belong in the body.
+- Suggested structure for most skills:
+  - One-paragraph overview (what it does, what it produces, what it does NOT do)
+  - Table of contents (if more than three major sections)
+  - Common workflows (imperative, step-by-step)
+  - Quick reference table (commands, flags, or decision points)
+  - Pointers to reference files with "Read when" conditions
+- If body exceeds 500 lines → move sections to `references/` and link back.
+
+### Step 4: Write scripts (if planned in Assay)
+
+Consult `references/script-design.md` before writing any script.
+
+- Use PEP 723 inline metadata (`# /// script` block) for Python dependencies.
+- Implement `--help` with usage, all flags, exit codes, and example invocations.
+- Support `--json` for structured output to stdout; diagnostics to stderr only.
+- Never use interactive prompts. Support `--dry-run` for destructive operations.
+- Exit non-zero on any error.
+
+When NOT to write a script:
+- A script in `scripts/` already covers the need → document its invocation in
+  SKILL.md; do not duplicate it.
+- The operation is a single shell one-liner → inline it in SKILL.md directly.
+- The logic requires domain knowledge you cannot verify → defer to the user.
+
+### Step 5: Write reference files (if planned in Assay)
+
+Each reference file must:
+- Cover exactly one domain or concern.
+- Stay under 2 000 tokens (`uv run scripts/token_estimate.py <file>`).
+- Open with a one-sentence description of its scope.
+- Include a table of contents if over 100 lines.
+- Be referenced from SKILL.md with a "Read when" condition, e.g.:
+  > Consult `references/auth-patterns.md` when implementing OAuth flows.
+
+**Gate:** all planned files are written and the directory matches the Assay file
+tree before advancing to Harden.
