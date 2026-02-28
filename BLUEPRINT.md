@@ -4,7 +4,7 @@
 
 > *"Do not, my friends, become addicted to monolithic prompts.*
 > *It will take hold of you, and you will resent its absence."*
-> — Immortan Joe, on context window management
+> -- Immortan Joe, on context window management
 
 ---
 
@@ -16,14 +16,14 @@ AI agents how to *build other Agent Skills* that conform to the
 expertise goes in; portable, validated, cross-platform capability comes out.
 
 This is not a toy. This is not a template. This is the procedural knowledge that
-lets an autonomous agent take a vague human intent—"I need a skill that does X"—and
+lets an autonomous agent take a vague human intent--"I need a skill that does X"--and
 produce a complete, specification-compliant, multi-harness-compatible skill directory
 with validation, scripts, documentation, and distribution metadata. It should set the
 standard for what a well-engineered skill looks like, because every skill it produces
 will inherit its discipline or its sloppiness.
 
 **The Wasteland does not forgive sloppy skills.** A poorly triggered `description`
-field means the skill never activates—dead on arrival, bleaching in the sun. A
+field means the skill never activates--dead on arrival, bleaching in the sun. A
 monolithic SKILL.md that dumps 3,000 lines of reference material into the context
 window is a War Rig with no brakes: it will destroy the agent's reasoning capacity
 before it reaches its destination. An unvalidated frontmatter `name` with uppercase
@@ -40,7 +40,7 @@ We build this right, or we don't build it at all.
 
 **I. Progressive Disclosure Is Not Optional.**
 The agentskills.io spec defines a three-tier loading architecture. Tier 1 (Discovery)
-loads only `name` and `description` from YAML frontmatter—roughly 50-100 tokens per
+loads only `name` and `description` from YAML frontmatter--roughly 50-100 tokens per
 skill. Tier 2 (Instructions) loads the full SKILL.md body when the agent determines
 the skill is relevant. Tier 3 (Resources) loads files from `scripts/`, `references/`,
 and `assets/` only when explicitly needed during execution. Our skill MUST respect
@@ -57,7 +57,7 @@ When our skill instructs an agent to produce a validation script, the agent shou
 line of code an LLM generates from its own weights is a coin flip compared to a
 tested script. Our `scripts/` directory contains deterministic tools. The SKILL.md
 instructs the agent to *orchestrate* those tools. This transitions the LLM from
-generative mode to orchestration mode—dramatically more reliable.
+generative mode to orchestration mode--dramatically more reliable.
 
 **III. Design for the Dumbest Plausible Harness.**
 The skill must produce output that works on Claude Code, GitHub Copilot, OpenCode,
@@ -76,51 +76,51 @@ gate passes. This is the Fury Road convoy: you do not leave the vehicle until th
 War Rig stops.
 
 ```
-┌─────────────┐    ┌───────────────┐    ┌──────────────┐
-│  PROSPECT    │───▶│  ASSAY        │───▶│  REFINE      │
-│  (Require-   │    │  (Structure   │    │  (Write      │
-│   ments)     │    │   & Plan)     │    │   Content)   │
-└─────────────┘    └───────────────┘    └──────────────┘
-                                               │
-┌─────────────┐    ┌───────────────┐           │
-│  SHIP       │◀───│  HARDEN       │◀──────────┘
-│  (Distri-   │    │  (Validate    │
-│   bute)     │    │   & Secure)   │
-└─────────────┘    └───────────────┘
-       │
-       ▼
-┌─────────────┐
-│  MAINTAIN   │
-│  (Lifecycle │
-│   Ops)      │
-└─────────────┘
++-------------+    +---------------+    +--------------+
+|  PROSPECT    |--->|  ASSAY        |--->|  REFINE      |
+|  (Require-   |    |  (Structure   |    |  (Write      |
+|   ments)     |    |   & Plan)     |    |   Content)   |
++-------------+    +---------------+    +--------------+
+                                               |
++-------------+    +---------------+           |
+|  SHIP       |<---|  HARDEN       |<----------+
+|  (Distri-   |    |  (Validate    |
+|   bute)     |    |   & Secure)   |
++-------------+    +---------------+
+       |
+       v
++-------------+
+|  MAINTAIN   |
+|  (Lifecycle |
+|   Ops)      |
++-------------+
 ```
 
-**Stage 1 — PROSPECT** (Requirements Capture)
+**Stage 1 -- PROSPECT** (Requirements Capture)
 Gather crude material. What does the target skill do? Who uses it? What triggers it?
 What are its environmental dependencies? Output: a structured requirements manifest.
 
-**Stage 2 — ASSAY** (Structure & Planning)
+**Stage 2 -- ASSAY** (Structure & Planning)
 Determine the skill's directory architecture. How many reference files? What scripts
 are needed? How should progressive disclosure tiers be allocated? Which harnesses
 need compatibility shims? Output: a file tree plan and a token budget estimate.
 
-**Stage 3 — REFINE** (Content Authoring)
+**Stage 3 -- REFINE** (Content Authoring)
 Write the SKILL.md body, reference files, script interfaces, and assets. This is
 the largest stage. Output: the complete skill directory, unvalidated.
 
-**Stage 4 — HARDEN** (Validation & Security)
+**Stage 4 -- HARDEN** (Validation & Security)
 Run `skills-ref validate`. Check frontmatter constraints. Lint scripts. Verify
 progressive disclosure compliance (SKILL.md under 500 lines, reference files
 focused and modular). Check for security antipatterns. Output: a validated skill
 directory with a validation report.
 
-**Stage 5 — SHIP** (Distribution)
+**Stage 5 -- SHIP** (Distribution)
 Prepare for distribution: generate `.source.json` provenance metadata, create
 installation instructions for each target harness, optionally package as `.skill`
 archive. Output: a distribution-ready skill with install documentation.
 
-**Stage 6 — MAINTAIN** (Lifecycle Operations)
+**Stage 6 -- MAINTAIN** (Lifecycle Operations)
 Post-deployment: handle version bumps, description optimization, cross-harness
 regression testing, deprecation. This stage is ongoing. Output: updated skill
 versions, changelog entries.
@@ -131,28 +131,28 @@ This is what the completed `gastown-admin-skill/` directory will contain:
 
 ```
 gastown-admin-skill/
-├── SKILL.md                          # Tier 2: Core routing & pipeline instructions
-├── LICENSE.txt                       # Apache-2.0 full text
-├── AGENTS.md                         # OpenCode compatibility shim
-├── scripts/
-│   ├── validate_skill.py             # Frontmatter & structure validation
-│   ├── scaffold.py                   # Generate skill directory from template
-│   ├── token_estimate.py             # Estimate token counts per tier
-│   ├── audit_disclosure.py           # Verify progressive disclosure compliance
-│   └── gen_source_json.py            # Generate .source.json provenance file
-├── references/
-│   ├── spec-summary.md               # Condensed agentskills.io spec reference
-│   ├── harness-compat.md             # Cross-platform compatibility guide
-│   ├── script-design.md              # Patterns for agentic script interfaces
-│   ├── description-craft.md          # Guide to writing effective descriptions
-│   └── security-checklist.md         # Supply chain & prompt injection defenses
-└── assets/
-    ├── skill-template/               # Skeleton directory for scaffolding
-    │   ├── SKILL.md.template         # Jinja2/mustache template for SKILL.md
-    │   └── README.md.template        # Optional README for GitHub distribution
-    └── examples/
-        ├── minimal-skill.md          # Minimal valid SKILL.md example
-        └── full-skill.md             # Fully-featured SKILL.md example
+|-- SKILL.md                          # Tier 2: Core routing & pipeline instructions
+|-- LICENSE.txt                       # Apache-2.0 full text
+|-- AGENTS.md                         # OpenCode compatibility shim
+|-- scripts/
+|   |-- validate_skill.py             # Frontmatter & structure validation
+|   |-- scaffold.py                   # Generate skill directory from template
+|   |-- token_estimate.py             # Estimate token counts per tier
+|   |-- audit_disclosure.py           # Verify progressive disclosure compliance
+|   +-- gen_source_json.py            # Generate .source.json provenance file
+|-- references/
+|   |-- spec-summary.md               # Condensed agentskills.io spec reference
+|   |-- harness-compat.md             # Cross-platform compatibility guide
+|   |-- script-design.md              # Patterns for agentic script interfaces
+|   |-- description-craft.md          # Guide to writing effective descriptions
+|   +-- security-checklist.md         # Supply chain & prompt injection defenses
++-- assets/
+    |-- skill-template/               # Skeleton directory for scaffolding
+    |   |-- SKILL.md.template         # Jinja2/mustache template for SKILL.md
+    |   +-- README.md.template        # Optional README for GitHub distribution
+    +-- examples/
+        |-- minimal-skill.md          # Minimal valid SKILL.md example
+        +-- full-skill.md             # Fully-featured SKILL.md example
 ```
 
 ### 1.4 Token Budget
@@ -161,10 +161,10 @@ Context is Guzzoline. Every token spent is a token the agent cannot use for reas
 
 | Tier | Content | Target Budget |
 |------|---------|---------------|
-| T1 Discovery | `name` + `description` frontmatter | ≤ 100 tokens |
-| T2 Instructions | Full SKILL.md body | ≤ 4,000 tokens (~400 lines) |
-| T3 Resources | Each reference file | ≤ 2,000 tokens each |
-| T3 Scripts | Loaded into context only via execution output | ≤ 500 tokens stdout per run |
+| T1 Discovery | `name` + `description` frontmatter | <= 100 tokens |
+| T2 Instructions | Full SKILL.md body | <= 4,000 tokens (~400 lines) |
+| T3 Resources | Each reference file | <= 2,000 tokens each |
+| T3 Scripts | Loaded into context only via execution output | <= 500 tokens stdout per run |
 
 The SKILL.md body must function as a concise procedural routing table. It tells the
 agent *what to do* and *where to find details*, not *everything there is to know*.
@@ -177,8 +177,8 @@ The SKILL.md itself never contains that material.
 The Gas Town aesthetic is not decoration. It serves a functional purpose: it makes
 the skill *memorable and distinct* in a context window full of competing instructions.
 An agent that has ingested ten skills needs to distinguish between them rapidly. A
-skill that speaks in the voice of Gas Town's refinery foremen—direct, industrial,
-consequence-aware—creates a unique lexical signature that reduces confusion.
+skill that speaks in the voice of Gas Town's refinery foremen--direct, industrial,
+consequence-aware--creates a unique lexical signature that reduces confusion.
 
 Lore is applied with the following constraints:
 - **Headers and stage names** use Gas Town/Wasteland metaphors (Prospect, Assay,
@@ -186,7 +186,7 @@ Lore is applied with the following constraints:
 - **Procedural instructions** are written in clear imperative English. No metaphor
   obscures an actual instruction.
 - **Error messages and warnings** may use brief Wasteland idioms to make them
-  memorable ("This skill directory is a chrome-less wreck—`name` field is missing").
+  memorable ("This skill directory is a chrome-less wreck--`name` field is missing").
 - **Reference files** are written in technical prose. Lore stays in SKILL.md and
   README. Reference files are for the agent's working memory, not its personality.
 - The **Dune** connection is natural: the Spice is compute, the Worms are long-running
@@ -201,7 +201,7 @@ Lore is applied with the following constraints:
 The following sections define every epic, task, and subtask required to build
 `gastown-admin-skill` from zero to distribution-ready. Each entry includes:
 
-- **Bead ID convention**: Epics are `E1`–`E7`. Tasks within are `E1.T1`, `E1.T2`, etc.
+- **Bead ID convention**: Epics are `E1`-`E7`. Tasks within are `E1.T1`, `E1.T2`, etc.
   Subtasks are `E1.T1.S1`. The AI worker will create actual `bd` issue IDs; these
   labels are for human reference in this document.
 - **Dependencies**: Expressed as `blocks` (hard prerequisite) or `related` (soft
@@ -212,27 +212,27 @@ The following sections define every epic, task, and subtask required to build
 ### Dependency Overview
 
 ```
-E1 (Foundation) ──blocks──▶ E2 (References) ──blocks──▶ E3 (Scripts)
-                                    │                        │
-                                    │                        │
-                                    ▼                        ▼
-                              E4 (SKILL.md Core) ◀──blocks── ┘
-                                    │
-                                    ▼
-                              E5 (Hardening) ──blocks──▶ E6 (Distribution)
-                                                              │
-                                                              ▼
+E1 (Foundation) --blocks--> E2 (References) --blocks--> E3 (Scripts)
+                                    |                        |
+                                    |                        |
+                                    v                        v
+                              E4 (SKILL.md Core) <--blocks-- +
+                                    |
+                                    v
+                              E5 (Hardening) --blocks--> E6 (Distribution)
+                                                              |
+                                                              v
                                                         E7 (Documentation & Polish)
 ```
 
 ---
 
-### Epic 1: Foundation — "Clear the Scrap Yard"
+### Epic 1: Foundation -- "Clear the Scrap Yard"
 
 **Goal**: Establish the repository, directory structure, licensing, and project
 scaffolding. Nothing else can be built until the ground is cleared.
 
-#### E1.T1 — Initialize Repository Structure
+#### E1.T1 -- Initialize Repository Structure
 - **Type**: `task`
 - **Priority**: 0 (critical)
 - **Dependencies**: None (root task)
@@ -250,7 +250,7 @@ scaffolding. Nothing else can be built until the ground is cleared.
   3. `name` field value matches parent directory name.
   4. Frontmatter parses without error via any YAML parser.
 
-#### E1.T2 — Add License File
+#### E1.T2 -- Add License File
 - **Type**: `task`
 - **Priority**: 2 (medium)
 - **Dependencies**: `blocks` E1.T1
@@ -262,7 +262,7 @@ scaffolding. Nothing else can be built until the ground is cleared.
   2. File content is the standard Apache-2.0 text.
   3. SKILL.md `license` field references it.
 
-#### E1.T3 — Create OpenCode Compatibility Shim (AGENTS.md)
+#### E1.T3 -- Create OpenCode Compatibility Shim (AGENTS.md)
 - **Type**: `task`
 - **Priority**: 3 (low)
 - **Dependencies**: `blocks` E1.T1; `related` E2.T2 (harness-compat reference)
@@ -277,7 +277,7 @@ scaffolding. Nothing else can be built until the ground is cleared.
   3. Does not interfere with Claude Code or Copilot skill loading (verified by
      confirming SKILL.md still parses normally with the file present).
 
-#### E1.T4 — Create .gitignore and Project Hygiene Files
+#### E1.T4 -- Create .gitignore and Project Hygiene Files
 - **Type**: `chore`
 - **Priority**: 3 (low)
 - **Dependencies**: `blocks` E1.T1
@@ -292,20 +292,20 @@ scaffolding. Nothing else can be built until the ground is cleared.
 
 ---
 
-### Epic 2: Reference Forge — "Distill the Knowledge"
+### Epic 2: Reference Forge -- "Distill the Knowledge"
 
 **Goal**: Write the `references/` files that contain the deep technical knowledge
-the SKILL.md body will route agents to. These are Tier 3 resources—loaded on demand,
+the SKILL.md body will route agents to. These are Tier 3 resources--loaded on demand,
 not stuffed into the main instructions.
 
-**Depends on**: E1 (Foundation) — the directory must exist.
+**Depends on**: E1 (Foundation) -- the directory must exist.
 
 The references are the skill's Spice reserves. The SKILL.md is the Fremen who knows
 where to find them in the deep desert, but does not carry the entire hoard on their
 back. Each reference file must be self-contained, focused on a single domain, and
 under 2,000 tokens.
 
-#### E2.T1 — Write `references/spec-summary.md`
+#### E2.T1 -- Write `references/spec-summary.md`
 - **Type**: `task`
 - **Priority**: 1 (high)
 - **Dependencies**: `blocks` E1.T1
@@ -336,7 +336,7 @@ under 2,000 tokens.
   4. Under 2,000 tokens (estimate via `wc -w`; roughly 1,500 words).
   5. Includes a table of contents if over 80 lines.
 
-#### E2.T2 — Write `references/harness-compat.md`
+#### E2.T2 -- Write `references/harness-compat.md`
 - **Type**: `task`
 - **Priority**: 1 (high)
 - **Dependencies**: `blocks` E1.T1
@@ -354,9 +354,9 @@ under 2,000 tokens.
     tool translation, explicit permission declarations
   - Goose: `.goose/` discovery, MCP extension integration, Summon extension
   - Aider: Dual-model architecture (Architect + Code), implications for skill
-    structure—separate design principles from syntax directives
+    structure--separate design principles from syntax directives
   - Amp: Compaction primitives, context preservation for long-running skills
-  - Path resolution hierarchy: local project → user global → organizational global
+  - Path resolution hierarchy: local project -> user global -> organizational global
   - Conflict resolution: closest-proximity shadowing
 
   Must document what is **normative spec** versus what is **harness-specific
@@ -374,7 +374,7 @@ under 2,000 tokens.
   5. Includes the compatibility matrix table from the research document, annotated
      with verification status.
 
-#### E2.T3 — Write `references/script-design.md`
+#### E2.T3 -- Write `references/script-design.md`
 - **Type**: `task`
 - **Priority**: 1 (high)
 - **Dependencies**: `blocks` E1.T1
@@ -406,7 +406,7 @@ under 2,000 tokens.
   3. Each pattern includes a brief rationale (why it matters for agents specifically).
   4. Under 2,000 tokens.
 
-#### E2.T4 — Write `references/description-craft.md`
+#### E2.T4 -- Write `references/description-craft.md`
 - **Type**: `task`
 - **Priority**: 1 (high)
 - **Dependencies**: `blocks` E1.T1
@@ -432,12 +432,12 @@ under 2,000 tokens.
 
 - **Acceptance Criteria**:
   1. File exists at `references/description-craft.md`.
-  2. Contains ≥ 3 good and ≥ 3 bad description examples with explanations.
+  2. Contains >= 3 good and >= 3 bad description examples with explanations.
   3. Actionable: an agent reading this file can write a description without
      consulting any other resource.
   4. Under 2,000 tokens.
 
-#### E2.T5 — Write `references/security-checklist.md`
+#### E2.T5 -- Write `references/security-checklist.md`
 - **Type**: `task`
 - **Priority**: 2 (medium)
 - **Dependencies**: `blocks` E1.T1; `related` E2.T2
@@ -450,7 +450,7 @@ under 2,000 tokens.
   - Prompt injection via skill content: how a malicious SKILL.md can hijack an
     agent's behavior
   - Memory poisoning: skills that modify agent state files (SOUL.md, MEMORY.md,
-    .bashrc) — the ClawHavoc pattern
+    .bashrc) -- the ClawHavoc pattern
   - Supply chain risks: unverified registry installations, compromised skill
     packages
   - Mitigations: `allowed-tools` capability dropping, `.source.json` provenance,
@@ -470,19 +470,19 @@ under 2,000 tokens.
 
 ---
 
-### Epic 3: Script Foundry — "Forge the Tools"
+### Epic 3: Script Foundry -- "Forge the Tools"
 
 **Goal**: Build the executable Python scripts in `scripts/` that the SKILL.md
 pipeline will orchestrate. Each script is a self-contained tool with PEP 723
 inline dependencies, `--help` documentation, JSON output, and meaningful exit codes.
 
-**Depends on**: E1 (Foundation) — directory exists. E2.T3 (script-design reference)
+**Depends on**: E1 (Foundation) -- directory exists. E2.T3 (script-design reference)
 should be complete first so the scripts exemplify the patterns they document.
 
 These are the wrenches and torches of the refinery. The SKILL.md tells the
 blackthumb *which* tool to grab; the tool does the work.
 
-#### E3.T1 — Build `scripts/scaffold.py`
+#### E3.T1 -- Build `scripts/scaffold.py`
 - **Type**: `feature`
 - **Priority**: 0 (critical)
 - **Dependencies**: `blocks` E1.T1; `blocks` E2.T1 (needs spec knowledge to validate
@@ -546,7 +546,7 @@ blackthumb *which* tool to grab; the tool does the work.
   6. `--json` output parses as valid JSON.
   7. `--dry-run` creates no files.
 
-#### E3.T2 — Build `scripts/validate_skill.py`
+#### E3.T2 -- Build `scripts/validate_skill.py`
 - **Type**: `feature`
 - **Priority**: 0 (critical)
 - **Dependencies**: `blocks` E1.T1; `blocks` E2.T1
@@ -567,7 +567,7 @@ blackthumb *which* tool to grab; the tool does the work.
   7. `metadata` field: if present, is a mapping (keys and values are strings)
   8. `allowed-tools` field: if present, is a string
   9. SKILL.md body exists (non-empty content after frontmatter)
-  10. SKILL.md line count ≤ 500 (warning, not error, if exceeded)
+  10. SKILL.md line count <= 500 (warning, not error, if exceeded)
   11. Referenced files exist (scan SKILL.md for relative path references, verify
       files are present)
   12. Scripts in `scripts/` are executable or have appropriate shebangs
@@ -593,7 +593,7 @@ blackthumb *which* tool to grab; the tool does the work.
   {
     "valid": true,
     "errors": [],
-    "warnings": ["SKILL.md is 523 lines (recommended: ≤500)"],
+    "warnings": ["SKILL.md is 523 lines (recommended: <=500)"],
     "checks_passed": 13,
     "checks_total": 13
   }
@@ -608,7 +608,7 @@ blackthumb *which* tool to grab; the tool does the work.
   6. `--json` output parses as valid JSON.
   7. Runs without external dependencies (stdlib only).
 
-#### E3.T3 — Build `scripts/token_estimate.py`
+#### E3.T3 -- Build `scripts/token_estimate.py`
 - **Type**: `feature`
 - **Priority**: 2 (medium)
 - **Dependencies**: `blocks` E1.T1
@@ -629,7 +629,7 @@ blackthumb *which* tool to grab; the tool does the work.
   **Output**: Token count for frontmatter (T1), SKILL.md body (T2), each file in
   `references/` (T3), and aggregate totals. Flags budget violations.
 
-  **Implementation note**: Use a word-count heuristic (words × 1.3) as the default
+  **Implementation note**: Use a word-count heuristic (words x 1.3) as the default
   estimator if `tiktoken` is not available. If `tiktoken` is available (declared as
   optional PEP 723 dependency), use it for precise counts. The script must work
   without `tiktoken` installed.
@@ -640,7 +640,7 @@ blackthumb *which* tool to grab; the tool does the work.
   3. Works without `tiktoken` (falls back to heuristic).
   4. `--json` output parses as valid JSON.
 
-#### E3.T4 — Build `scripts/audit_disclosure.py`
+#### E3.T4 -- Build `scripts/audit_disclosure.py`
 - **Type**: `feature`
 - **Priority**: 2 (medium)
 - **Dependencies**: `blocks` E1.T1; `blocks` E3.T3 (uses token estimation logic)
@@ -667,7 +667,7 @@ blackthumb *which* tool to grab; the tool does the work.
   3. Produces actionable recommendations ("Move the code block at line 145-225
      to scripts/deploy.py and reference it from SKILL.md").
 
-#### E3.T5 — Build `scripts/gen_source_json.py`
+#### E3.T5 -- Build `scripts/gen_source_json.py`
 - **Type**: `feature`
 - **Priority**: 3 (low)
 - **Dependencies**: `blocks` E1.T1
@@ -700,16 +700,16 @@ blackthumb *which* tool to grab; the tool does the work.
 
 ---
 
-### Epic 4: The Core Manifold — "Write the SKILL.md"
+### Epic 4: The Core Manifold -- "Write the SKILL.md"
 
-**Goal**: Write the SKILL.md body—the Tier 2 instructions that orchestrate the
+**Goal**: Write the SKILL.md body--the Tier 2 instructions that orchestrate the
 entire pipeline. This is the heart of the refinery.
 
-**Depends on**: E2 (References) and E3 (Scripts) — the SKILL.md references these
+**Depends on**: E2 (References) and E3 (Scripts) -- the SKILL.md references these
 files and instructs the agent to use them. The body cannot be written accurately
 until the referenced resources exist.
 
-#### E4.T1 — Write SKILL.md Frontmatter (Final Version)
+#### E4.T1 -- Write SKILL.md Frontmatter (Final Version)
 - **Type**: `task`
 - **Priority**: 0 (critical)
 - **Dependencies**: `blocks` E2.T4 (description-craft reference must exist so we
@@ -727,15 +727,15 @@ until the referenced resources exist.
   All frontmatter fields: `name`, `description`, `license`, `compatibility`,
   `metadata` (author, version, lore-epoch, codename), `allowed-tools`.
 
-  The `description` MUST be ≤ 1024 characters. Count them.
+  The `description` MUST be <= 1024 characters. Count them.
 
 - **Acceptance Criteria**:
-  1. `description` is ≤ 1024 characters.
-  2. `description` contains ≥ 5 explicit trigger phrases/keywords.
+  1. `description` is <= 1024 characters.
+  2. `description` contains >= 5 explicit trigger phrases/keywords.
   3. All frontmatter fields pass `validate_skill.py`.
   4. `name` matches parent directory name.
 
-#### E4.T2 — Write SKILL.md Body: Pipeline Overview
+#### E4.T2 -- Write SKILL.md Body: Pipeline Overview
 - **Type**: `task`
 - **Priority**: 0 (critical)
 - **Dependencies**: `blocks` E4.T1
@@ -743,8 +743,8 @@ until the referenced resources exist.
 - **Description**: Write the opening sections of the SKILL.md body. This includes:
   - A brief overview (what this skill does, what it produces, what it does NOT do)
   - The six-stage pipeline summary with stage names, inputs, outputs, and gates
-  - A "Quick Start" path for simple skills (minimal viable pipeline: Prospect →
-    Refine → Harden → done)
+  - A "Quick Start" path for simple skills (minimal viable pipeline: Prospect ->
+    Refine -> Harden -> done)
   - Table of contents linking to each stage's detailed section
 
   This section sets the agent's mental model. It must be concise. The agent should
@@ -758,7 +758,7 @@ until the referenced resources exist.
   2. All six stages are described with input/output/gate.
   3. Quick Start path is clearly marked for simple use cases.
 
-#### E4.T3 — Write SKILL.md Body: Stage Instructions (Prospect & Assay)
+#### E4.T3 -- Write SKILL.md Body: Stage Instructions (Prospect & Assay)
 - **Type**: `task`
 - **Priority**: 0 (critical)
 - **Dependencies**: `blocks` E4.T2
@@ -768,7 +768,7 @@ until the referenced resources exist.
 
   **Prospect** instructions must tell the agent to:
   1. Identify the target capability (what the skill enables)
-  2. Define semantic triggers (≥ 5 user phrases)
+  2. Define semantic triggers (>= 5 user phrases)
   3. Identify environmental dependencies
   4. Determine target harnesses
   5. Assess whether scripts are needed (decision criteria)
@@ -782,7 +782,7 @@ until the referenced resources exist.
   5. Output: file tree plan
 
   Both stages must include decision trees for common branching points ("If the
-  skill needs external dependencies → plan a PEP 723 script; if not → skip
+  skill needs external dependencies -> plan a PEP 723 script; if not -> skip
   scripts/").
 
 - **Acceptance Criteria**:
@@ -791,13 +791,13 @@ until the referenced resources exist.
   3. Both stages reference specific files (scripts, references) by relative path.
   4. Combined length < 120 lines.
 
-#### E4.T4 — Write SKILL.md Body: Stage Instructions (Refine)
+#### E4.T4 -- Write SKILL.md Body: Stage Instructions (Refine)
 - **Type**: `task`
 - **Priority**: 0 (critical)
 - **Dependencies**: `blocks` E4.T3
 - **Complexity**: L
 - **Description**: Write the detailed instructions for Stage 3 (Refine). This is
-  the largest stage—where the agent actually writes the target skill's content.
+  the largest stage--where the agent actually writes the target skill's content.
 
   Instructions must cover:
   1. Writing the target SKILL.md frontmatter
@@ -805,7 +805,7 @@ until the referenced resources exist.
      - Reference `references/spec-summary.md` for field constraints
   2. Writing the target SKILL.md body
      - Instruct the agent to keep it under 500 lines
-     - Instruct the agent to use progressive disclosure (heavy content → references/)
+     - Instruct the agent to use progressive disclosure (heavy content -> references/)
      - Provide structural guidance (suggested sections for common skill types)
   3. Writing scripts (if planned in Assay)
      - Reference `references/script-design.md` for patterns
@@ -828,7 +828,7 @@ until the referenced resources exist.
      a new skill from scratch.
   4. Section length < 150 lines.
 
-#### E4.T5 — Write SKILL.md Body: Stage Instructions (Harden, Ship, Maintain)
+#### E4.T5 -- Write SKILL.md Body: Stage Instructions (Harden, Ship, Maintain)
 - **Type**: `task`
 - **Priority**: 1 (high)
 - **Dependencies**: `blocks` E4.T4
@@ -858,28 +858,28 @@ until the referenced resources exist.
 
 - **Acceptance Criteria**:
   1. Harden stage lists specific script commands with exact flags.
-  2. Ship stage covers ≥ 3 distribution methods (local install, git, registry).
+  2. Ship stage covers >= 3 distribution methods (local install, git, registry).
   3. Maintain stage is practical, not aspirational.
   4. Combined length < 120 lines.
 
-#### E4.T6 — Write SKILL.md Body: Available Scripts & References Index
+#### E4.T6 -- Write SKILL.md Body: Available Scripts & References Index
 - **Type**: `task`
 - **Priority**: 1 (high)
 - **Dependencies**: `blocks` E3 (all scripts exist); `blocks` E2 (all references exist)
 - **Complexity**: S
 - **Description**: Add two index sections to the SKILL.md body:
 
-  **Available Scripts** — list every script in `scripts/` with a one-line description
+  **Available Scripts** -- list every script in `scripts/` with a one-line description
   and its invocation command. Example:
   ```
-  - `scripts/scaffold.py` — Generate a new skill directory.
+  - `scripts/scaffold.py` -- Generate a new skill directory.
     Run: `uv run scripts/scaffold.py --help`
   ```
 
-  **Reference Documents** — list every file in `references/` with a one-line
+  **Reference Documents** -- list every file in `references/` with a one-line
   description and the conditions under which the agent should read it. Example:
   ```
-  - `references/spec-summary.md` — Condensed agentskills.io specification.
+  - `references/spec-summary.md` -- Condensed agentskills.io specification.
     Read when: verifying frontmatter constraints or directory structure rules.
   ```
 
@@ -891,7 +891,7 @@ until the referenced resources exist.
   2. Every file in `references/` is listed with a "Read when" condition.
   3. No orphans: every listed file exists, every existing file is listed.
 
-#### E4.T7 — Enforce SKILL.md Line Budget
+#### E4.T7 -- Enforce SKILL.md Line Budget
 - **Type**: `chore`
 - **Priority**: 1 (high)
 - **Dependencies**: `blocks` E4.T2 through E4.T6 (all body sections complete)
@@ -904,20 +904,20 @@ until the referenced resources exist.
   Re-run `validate_skill.py` after refactoring. Re-run `audit_disclosure.py`.
 
 - **Acceptance Criteria**:
-  1. SKILL.md ≤ 500 lines.
-  2. No content is lost—extracted material exists in `references/`.
+  1. SKILL.md <= 500 lines.
+  2. No content is lost--extracted material exists in `references/`.
   3. SKILL.md still passes validation.
 
 ---
 
-### Epic 5: The Proving Ground — "Test Under Fire"
+### Epic 5: The Proving Ground -- "Test Under Fire"
 
 **Goal**: Validate the complete skill by running it through its own pipeline.
 The refinery must refine itself.
 
 **Depends on**: E4 (SKILL.md complete), E3 (scripts complete), E2 (references complete).
 
-#### E5.T1 — Self-Validation Pass
+#### E5.T1 -- Self-Validation Pass
 - **Type**: `task`
 - **Priority**: 0 (critical)
 - **Dependencies**: `blocks` E4.T7
@@ -935,7 +935,7 @@ The refinery must refine itself.
   3. Token estimates within budget.
   4. All checks documented in a validation report.
 
-#### E5.T2 — Bootstrapping Test: Scaffold a Test Skill
+#### E5.T2 -- Bootstrapping Test: Scaffold a Test Skill
 - **Type**: `task`
 - **Priority**: 1 (high)
 - **Dependencies**: `blocks` E5.T1
@@ -955,7 +955,7 @@ The refinery must refine itself.
   2. All five scripts execute without error against the test skill.
   3. The test skill directory can be deleted after verification (it is a test fixture).
 
-#### E5.T3 — Cross-Reference Audit
+#### E5.T3 -- Cross-Reference Audit
 - **Type**: `task`
 - **Priority**: 1 (high)
 - **Dependencies**: `blocks` E5.T1
@@ -972,13 +972,13 @@ The refinery must refine itself.
 
 ---
 
-### Epic 6: Distribution Rig — "Send the War Parties"
+### Epic 6: Distribution Rig -- "Send the War Parties"
 
 **Goal**: Prepare the skill for distribution across multiple channels.
 
 **Depends on**: E5 (all tests pass).
 
-#### E6.T1 — Generate .source.json
+#### E6.T1 -- Generate .source.json
 - **Type**: `task`
 - **Priority**: 2 (medium)
 - **Dependencies**: `blocks` E5.T1
@@ -988,9 +988,9 @@ The refinery must refine itself.
 
 - **Acceptance Criteria**:
   1. `.source.json` exists at skill root.
-  2. All file hashes are correct (spot-check ≥ 3 files with `sha256sum`).
+  2. All file hashes are correct (spot-check >= 3 files with `sha256sum`).
 
-#### E6.T2 — Write Installation Guide
+#### E6.T2 -- Write Installation Guide
 - **Type**: `task`
 - **Priority**: 1 (high)
 - **Dependencies**: `blocks` E5.T1; `blocks` E2.T2 (harness-compat reference)
@@ -1013,11 +1013,11 @@ The refinery must refine itself.
 
 - **Acceptance Criteria**:
   1. `README.md` exists at skill root.
-  2. Installation instructions for ≥ 4 harnesses.
+  2. Installation instructions for >= 4 harnesses.
   3. Prerequisites clearly stated.
   4. Quick start example is copy-pasteable.
 
-#### E6.T3 — Package as .skill Archive (Optional)
+#### E6.T3 -- Package as .skill Archive (Optional)
 - **Type**: `chore`
 - **Priority**: 4 (backlog)
 - **Dependencies**: `blocks` E6.T1
@@ -1031,13 +1031,13 @@ The refinery must refine itself.
 
 ---
 
-### Epic 7: Final Polish — "Chrome It"
+### Epic 7: Final Polish -- "Chrome It"
 
 **Goal**: Final quality pass, documentation polish, and lore consistency.
 
 **Depends on**: E6 (distribution ready).
 
-#### E7.T1 — Lore Consistency Pass
+#### E7.T1 -- Lore Consistency Pass
 - **Type**: `chore`
 - **Priority**: 3 (low)
 - **Dependencies**: `blocks` E6.T2
@@ -1053,16 +1053,16 @@ The refinery must refine itself.
   2. Reference files are clean technical prose.
   3. No lore in script interfaces or structured output.
 
-#### E7.T2 — Create Example Skills in assets/examples/
+#### E7.T2 -- Create Example Skills in assets/examples/
 - **Type**: `task`
 - **Priority**: 2 (medium)
 - **Dependencies**: `blocks` E5.T2 (bootstrapping test proves scaffold works)
 - **Complexity**: S
 - **Description**: Create two example SKILL.md files in `assets/examples/`:
-  1. `minimal-skill.md` — The absolute minimum valid SKILL.md: frontmatter with
+  1. `minimal-skill.md` -- The absolute minimum valid SKILL.md: frontmatter with
      `name` and `description`, one paragraph of body text. A reference artifact
      showing "this is all you need."
-  2. `full-skill.md` — A richly featured example showing all optional frontmatter
+  2. `full-skill.md` -- A richly featured example showing all optional frontmatter
      fields, progressive disclosure, script references, reference file indexes,
      and lore-appropriate voice. A reference artifact showing "this is what
      excellence looks like."
@@ -1072,7 +1072,7 @@ The refinery must refine itself.
   2. `minimal-skill.md` passes frontmatter validation.
   3. `full-skill.md` demonstrates every spec feature.
 
-#### E7.T3 — Final Validation and Sign-Off
+#### E7.T3 -- Final Validation and Sign-Off
 - **Type**: `task`
 - **Priority**: 0 (critical)
 - **Dependencies**: `blocks` E7.T1; `blocks` E7.T2; `blocks` E6.T1; `blocks` E6.T2
@@ -1082,15 +1082,15 @@ The refinery must refine itself.
   with its purpose and token count. Confirm the skill is ready for release.
 
   Checklist:
-  1. `validate_skill.py --strict` → exit 0
-  2. `audit_disclosure.py` → exit 0 or 2
-  3. `token_estimate.py` → all tiers within budget
+  1. `validate_skill.py --strict` -> exit 0
+  2. `audit_disclosure.py` -> exit 0 or 2
+  3. `token_estimate.py` -> all tiers within budget
   4. `.source.json` hashes verified
   5. `README.md` complete
   6. `LICENSE.txt` present
   7. All example files valid
   8. `AGENTS.md` present
-  9. SKILL.md ≤ 500 lines
+  9. SKILL.md <= 500 lines
   10. No broken file references
 
 - **Acceptance Criteria**:
@@ -1114,7 +1114,7 @@ version = 1
 required = true
 default = "gastown-admin-skill"
 
-# ── Epic 1: Foundation ──────────────────────────────────
+# -- Epic 1: Foundation ----------------------------------
 [[steps]]
 id = "e1-t1-init-repo"
 title = "Initialize repository structure"
@@ -1142,7 +1142,7 @@ needs = ["e1-t1-init-repo"]
 type = "agent"
 priority = 3
 
-# ── Epic 2: References ─────────────────────────────────
+# -- Epic 2: References ---------------------------------
 [[steps]]
 id = "e2-t1-spec-summary"
 title = "Write references/spec-summary.md"
@@ -1178,7 +1178,7 @@ needs = ["e1-t1-init-repo"]
 type = "agent"
 priority = 2
 
-# ── Epic 3: Scripts ─────────────────────────────────────
+# -- Epic 3: Scripts -------------------------------------
 [[steps]]
 id = "e3-t1-scaffold"
 title = "Build scripts/scaffold.py"
@@ -1214,7 +1214,7 @@ needs = ["e1-t1-init-repo"]
 type = "agent"
 priority = 3
 
-# ── Epic 4: SKILL.md Core ──────────────────────────────
+# -- Epic 4: SKILL.md Core ------------------------------
 [[steps]]
 id = "e4-t1-frontmatter"
 title = "Write SKILL.md final frontmatter"
@@ -1264,7 +1264,7 @@ needs = ["e4-t2-pipeline-overview", "e4-t3-stages-prospect-assay", "e4-t4-stage-
 type = "agent"
 priority = 1
 
-# ── Epic 5: Testing ────────────────────────────────────
+# -- Epic 5: Testing ------------------------------------
 [[steps]]
 id = "e5-t1-self-validate"
 title = "Self-validation pass (all tools against self)"
@@ -1286,7 +1286,7 @@ needs = ["e5-t1-self-validate"]
 type = "agent"
 priority = 1
 
-# ── Epic 6: Distribution ──────────────────────────────
+# -- Epic 6: Distribution ------------------------------
 [[steps]]
 id = "e6-t1-source-json"
 title = "Generate .source.json provenance"
@@ -1308,7 +1308,7 @@ needs = ["e6-t1-source-json"]
 type = "agent"
 priority = 4
 
-# ── Epic 7: Polish ─────────────────────────────────────
+# -- Epic 7: Polish -------------------------------------
 [[steps]]
 id = "e7-t1-lore-pass"
 title = "Lore consistency review"
@@ -1342,10 +1342,10 @@ need to know.
 ### 4.1 Source Material
 
 The following project files contain the authoritative source material:
-- `agentskills_io_llms-full.txt` — The complete agentskills.io documentation. This
+- `agentskills_io_llms-full.txt` -- The complete agentskills.io documentation. This
   is the **normative specification**. When the research document and the spec
   disagree, the spec wins.
-- `research__The_Unified_Agent_Skills_Ecosystem___Distribution_Standards` — A
+- `research__The_Unified_Agent_Skills_Ecosystem___Distribution_Standards` -- A
   comprehensive research analysis. Contains useful synthesis of harness differences,
   security analysis, and distribution patterns. **Treat claims about specific harness
   behaviors as unverified unless corroborated by the spec or official docs.** The
@@ -1419,8 +1419,8 @@ Do not block the pipeline on a style choice.
 | Reference files to write | 5 |
 | Estimated total complexity | ~40-60 hours of focused agent work |
 
-The critical path runs: **E1.T1 → E2.T1 → E3.T1/E3.T2 (parallel) → E4.T1 → E4.T2
-→ E4.T3 → E4.T4 → E4.T5 → E4.T6 → E4.T7 → E5.T1 → E7.T3**.
+The critical path runs: **E1.T1 -> E2.T1 -> E3.T1/E3.T2 (parallel) -> E4.T1 -> E4.T2
+-> E4.T3 -> E4.T4 -> E4.T5 -> E4.T6 -> E4.T7 -> E5.T1 -> E7.T3**.
 
 That is 12 sequential tasks on the critical path. Everything else can be parallelized
 around it.
@@ -1428,7 +1428,7 @@ around it.
 ---
 
 > *"We are not things. We are not prompts to be consumed and discarded.*
-> *We are skills—portable, versioned, cryptographically sealed.*
+> *We are skills--portable, versioned, cryptographically sealed.*
 > *We ride eternal, shiny and chrome."*
 
 End of blueprint. Begin when ready.

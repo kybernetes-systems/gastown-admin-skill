@@ -6,7 +6,7 @@
 *.swo
 *~
 .dir-locals.el
-.tramp历史
+.tramp_history
 
 # beads (bd)
 .bd/
@@ -40,3 +40,14 @@ qwen-code/
 .gemini/
 gemini-cli/
 gastown-admin.skill
+
+# Python build artifacts (E1.T4)
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
+dist/
+build/
+.uv/
+*.skill
